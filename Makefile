@@ -9,8 +9,8 @@ OPATH = obj/
 CFILES = \
 	 main.c \
 	 syscall.c \
-	 binary_finder.c
-
+	 binary_finder.c\
+	 libft.c
 
 OFILES = $(CFILES:.c=.o)
 
