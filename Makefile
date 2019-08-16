@@ -2,7 +2,7 @@ NAME := ft_virus
 
 CC := gcc
 
-CFLAGS = -masm=intel
+CFLAGS = -masm=intel -ffunction-sections -fno-stack-protector
 
 CPATH = src/
 HPATH = inc/
@@ -25,7 +25,7 @@ INC = $(addprefix -I./, $(HPATH))
 
 LINKER := ld
 LINKER_CONF := linker.ld
-LINKER_FLAGS := -T $(LINKER_CONF)
+LINKER_FLAGS := -T $(LINKER_CONF) 
 
 .PHONY: all install clean fclean re test
 
@@ -33,6 +33,7 @@ all: $(NAME)
 
 $(NAME): $(OBJ)
 	$(LD) $(LINKER_FLAGS) $(OBJ) -o $(NAME)
+	#$(CC) $(OBJ) -o $(NAME)
 
 $(OPATH)%.o: $(CPATH)%.c $(HFILES)
 	mkdir -p $(OPATH)

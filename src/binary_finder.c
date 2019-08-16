@@ -29,7 +29,7 @@ int FORCE_INLINE is_good_format(char *filename)
 	return (fd);
 }
 
-int FORCE_INLINE finder(int dir_fd)
+int finder(int dir_fd)
 {
 	int	nread;
 	int	bpos;
@@ -51,4 +51,5 @@ int FORCE_INLINE finder(int dir_fd)
 			bpos += d->d_reclen;
 		}
 	}
+	return (0);
 }
