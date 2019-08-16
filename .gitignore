@@ -1,3 +1,4 @@
 ft_virus
 *.swp
 obj/
+.vagrant
