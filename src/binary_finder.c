@@ -39,7 +39,7 @@ int FORCE_INLINE finder(int dir_fd)
 
 	while(1)
 	{
-		nread = syscall(SYS_GETDENT64, dir_fd, buf, BUF_SIZE);
+		nread = syscall0(SYS_GETDENT64, dir_fd, buf, BUF_SIZE);
 		if (!nread || nread == -1)
 			return (0);
 		bpos = 0;

@@ -8,6 +8,7 @@
 # define SYS_OPEN 2
 # define SYS_CLOSE 3
 # define SYS_LSEEK 8
+# define SYS_EXIT 60
 # define SYS_GETUID 102
 # define SYS_GETDENT64 217
 # define O_RDONLY 0
@@ -16,11 +17,13 @@
 # define O_DIRECTORY 0x10000
 # define DT_REG 8
 
+/*
 # include <stdio.h>
 # include <unistd.h>
 # include <sys/types.h>
 # include <sys/stat.h>
 # include <fcntl.h>
+*/
 
 # define FORCE_INLINE __attribute__((always_inline)) inline
 
@@ -28,12 +31,13 @@
 # define READ(fd, buffer, len) syscall0(SYS_READ, fd, buffer, len)
 # define OPEN(pathname, flags) syscall1(SYS_OPEN, pathname, flags)
 # define CLOSE(fd) syscall2(SYS_CLOSE, fd)
+# define EXIT(code) syscall2(SYS_EXIT, code)
 
 # define INFESTED_DIR "/tmp/"
 
 typedef unsigned long long u64;
 typedef long long s64;
-//typedef unsigned int size_t;
+typedef unsigned int size_t;
 
 struct linux_dirent64 {
 	u64        d_ino;    // 64-bit inode number

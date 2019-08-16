@@ -1,14 +1,9 @@
 #include "ft_virus.h"
 
-void FORCE_INLINE inject(int file_fd)
+void start(void)
 {
-	// TODO
-	/*
-	find_cave();
-	change_sections_header(); // to make the cave executable
-	fill_payload(); // mprotect us!
-	copy_payload(); // memcpy you know...
-	*/
+	payload();
+	EXIT(0);
 }
 
 void payload()
@@ -33,8 +28,3 @@ void payload_end(void)
 	;
 }
 
-int main(void)
-{
-	payload();
-	return (0);
-}
