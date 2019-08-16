@@ -72,5 +72,6 @@ int finder(int fd);
 size_t	ft_strlen(char *str);
 int	ft_memcmp(char *str1, char *str2, size_t len);
 void	*ft_memcpy(char *dest, char *src, size_t len);
+void	ft_putnbr(int n);
 
 #endif

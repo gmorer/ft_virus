@@ -12,6 +12,7 @@
 		   *(.text.ft_strlen)
 		   *(.text.ft_memcmp)
 		   *(.text.ft_memcpy)
+		   *(.text.ft_putnbr)
 		   *(.text.inject)
 		   *(.text.payload_end)
 	   }
