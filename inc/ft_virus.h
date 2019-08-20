@@ -2,20 +2,31 @@
 # define FT_VIRUS_H
 
 # include <elf.h>
+# include "./struct.h"
 
 # define SYS_READ 0
 # define SYS_WRITE 1
 # define SYS_OPEN 2
 # define SYS_CLOSE 3
+# define SYS_FSTAT 5
 # define SYS_LSEEK 8
+# define SYS_MMAP 9
+# define SYS_MUNMAP 11
 # define SYS_EXIT 60
 # define SYS_GETUID 102
 # define SYS_GETDENT64 217
+
 # define O_RDONLY 0
 # define O_WRONLY 1
 # define O_RDWR 2
 # define O_DIRECTORY 0x10000
+
 # define DT_REG 8
+# define MAP_SHARED 1
+# define PROT_READ 1
+# define PROT_WRITE 2
+# define MAP_FAILED ((void *)-1)
+
 
 /*
 # include <stdio.h>
@@ -32,22 +43,11 @@
 # define OPEN(pathname, flags) syscall1(SYS_OPEN, pathname, flags)
 # define CLOSE(fd) syscall2(SYS_CLOSE, fd)
 # define EXIT(code) syscall2(SYS_EXIT, code)
+# define FSTAT(fildes, buf) syscall3(SYS_FSTAT, fildes, (struct stat*)buf)
+# define MMAP(addr, len, prot, flags, fildes, off) syscall6(SYS_MMAP, addr, len, prot, flags, fildes, off)
+# define MUNMAP(addr, length) syscall1(SYS_MUNMAP, addr, length)
 
 # define INFESTED_DIR "/tmp/"
-
-typedef unsigned long long u64;
-typedef long long s64;
-typedef unsigned int size_t;
-typedef signed long off_t;
-
-struct linux_dirent64 {
-	u64        d_ino;    // 64-bit inode number
-	s64        d_off;    // 64-bit offset to next structure
-	unsigned short d_reclen; // Size of this dirent
-	unsigned char  d_type;   // File type
-	char           d_name[]; // Filename (null-terminated)
-};
-
 
 typedef struct	s_file
 {
@@ -66,7 +66,8 @@ typedef struct	s_data
 size_t	syscall0(int syscall, int arg1, char *arg2, size_t arg3);
 int	syscall1(int syscall, char *arg1, int arg2);
 size_t	syscall2(int syscall, int arg1);
-size_t syscall6(int syscall, void *arg1, size_t arg2, int arg3, int arg4, int arg5, off_t arg6);
+size_t	syscall3(int syscall, int arg1, void *arg2);
+void *syscall6(int syscall, void *arg1, size_t arg2, int arg3, int arg4, int arg5, off_t arg6);
 
 /* main.c */
 void inject(int file_fd);

