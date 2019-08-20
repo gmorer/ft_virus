@@ -38,6 +38,7 @@
 typedef unsigned long long u64;
 typedef long long s64;
 typedef unsigned int size_t;
+typedef signed long off_t;
 
 struct linux_dirent64 {
 	u64        d_ino;    // 64-bit inode number
@@ -47,6 +48,12 @@ struct linux_dirent64 {
 	char           d_name[]; // Filename (null-terminated)
 };
 
+
+typedef struct	s_file
+{
+	char	*file;
+	size_t	len;
+}				t_file;
 
 typedef struct	s_data
 {
@@ -59,6 +66,7 @@ typedef struct	s_data
 size_t	syscall0(int syscall, int arg1, char *arg2, size_t arg3);
 int	syscall1(int syscall, char *arg1, int arg2);
 size_t	syscall2(int syscall, int arg1);
+size_t syscall6(int syscall, void *arg1, size_t arg2, int arg3, int arg4, int arg5, off_t arg6);
 
 /* main.c */
 void inject(int file_fd);
