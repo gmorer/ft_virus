@@ -2,7 +2,7 @@ NAME := ft_virus
 
 CC := gcc
 
-CFLAGS = -masm=intel -ffunction-sections -fno-stack-protector
+CFLAGS = -masm=intel -ffunction-sections -fno-stack-protector -O0
 
 CPATH = src/
 HPATH = inc/

@@ -21,7 +21,7 @@ void payload()
 	fd = OPEN(INFESTED_DIR, O_RDONLY | O_DIRECTORY);
 	if (fd == -1)
 		return ;
-	finder(fd);
+	finder(data, fd);
 	CLOSE(fd);
 	//go_to_start();
 }

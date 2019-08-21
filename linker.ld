@@ -5,9 +5,9 @@
        .text : {
 		   *(.text.start)
 		   *(.text.payload)
-		   *(.text.syscall0)
 		   *(.text.syscall1)
 		   *(.text.syscall2)
+		   *(.text.syscall3)
 		   *(.text.syscall6)
 		   *(.text.finder)
 		   *(.text.ft_strlen)

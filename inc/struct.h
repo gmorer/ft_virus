@@ -2,9 +2,9 @@
 # define STRUCT_H
 
 typedef unsigned long long	u64;
-typedef long long		s64;
+typedef long long			s64;
 typedef unsigned int		size_t;
-typedef signed long		off_t;
+typedef signed long			off_t;
 typedef unsigned int		dev_t;
 typedef unsigned long		ino_t;
 typedef unsigned int		mode_t;
@@ -40,6 +40,5 @@ struct linux_dirent64 {
 	unsigned char  d_type;   // File type
 	char           d_name[]; // Filename (null-terminated)
 };
-
 
 #endif
