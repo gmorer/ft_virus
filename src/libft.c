@@ -58,3 +58,10 @@ void ft_putnbr(int n)
 		}
 	}
 }
+
+void debug_u64(char *str, u64 nbr)
+{
+	WRITE(1, str, ft_strlen(str));
+	ft_putnbr((int)nbr);
+	WRITE(1, "\n", 1);
+}

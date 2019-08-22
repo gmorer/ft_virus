@@ -27,6 +27,8 @@
 # define PROT_WRITE 2
 # define MAP_FAILED ((void *)-1)
 
+# define PAYLOAD_ALIGN 4
+
 /* lseek */
 # define SEEK_SET 0
 # define SEEK_CUR 1
@@ -54,15 +56,28 @@
 
 # define INFESTED_DIR "/tmp/"
 
+typedef struct	s_static
+{
+	size_t pl_size;
+
+}				t_static;
+
+typedef struct s_binary
+{
+	size_t old_entry;
+	size_t new_entry;
+	size_t v_addr;
+	size_t file_size;
+}				t_binary;
+
 typedef struct	s_data
 {
 	int fd;
 	int virt_addr;
 	int	key;
 	int	decrypt_start;
-	int	v_addr;
-	int new_entry;
-	int pl_size;
+	t_binary bin;
+	t_static infos;
 }		t_data;
 
 
@@ -71,6 +86,9 @@ u64	syscall1(int syscall, u64 arg1);
 u64	syscall2(int syscall, u64 arg1, u64 arg2);
 u64	syscall3(int syscall, u64 arg1, u64 arg2, u64 arg3);
 u64 syscall6(int syscall, u64 arg1, u64 arg2, u64 arg3, u64 arg4, u64 arg5, u64 arg6);
+
+/* biin_infos */
+t_binary get_infos(int fd);
 
 /* main.c */
 void payload(void);
@@ -87,5 +105,6 @@ size_t	ft_strlen(char *str);
 int	ft_memcmp(char *str1, char *str2, size_t len);
 void	*ft_memcpy(char *dest, char *src, size_t len);
 void	ft_putnbr(int n);
+void debug_u64(char *str, u64 nbr);
 
 #endif

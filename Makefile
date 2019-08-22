@@ -13,7 +13,8 @@ CFILES = \
 	 syscall.c \
 	 binary_finder.c\
 	 libft.c\
-	 inject.c
+	 inject.c\
+	 get_infos.c
 
 OFILES = $(CFILES:.c=.o)
 
@@ -33,7 +34,6 @@ all: $(NAME)
 
 $(NAME): $(OBJ)
 	$(LD) $(LINKER_FLAGS) $(OBJ) -o $(NAME)
-	#$(CC) $(OBJ) -o $(NAME)
 
 $(OPATH)%.o: $(CPATH)%.c $(HFILES)
 	mkdir -p $(OPATH)
