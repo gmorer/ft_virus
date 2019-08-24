@@ -27,7 +27,7 @@
 # define PROT_WRITE 2
 # define MAP_FAILED ((void *)-1)
 
-# define PAYLOAD_ALIGN 4
+# define PAYLOAD_ALIGN 0
 
 /* lseek */
 # define SEEK_SET 0
