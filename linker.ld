@@ -5,6 +5,7 @@
        .text : {
 		   *(.text.start)
 		   *(.text.payload)
+		   *(.ft_data)
 		   *(.text.syscall1)
 		   *(.text.syscall2)
 		   *(.text.syscall3)
@@ -14,6 +15,7 @@
 		   *(.text.ft_memcmp)
 		   *(.text.ft_memcpy)
 		   *(.text.ft_putnbr)
+		   *(.text.ft_putchar)
 		   *(.text.debug_u64)
 		   *(.text.inject)
 		   *(.text.payload_end)

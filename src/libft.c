@@ -59,9 +59,14 @@ void ft_putnbr(int n)
 	}
 }
 
+void ft_putchar(char c)
+{
+	WRITE(1, &c, 1);
+}
+
 void debug_u64(char *str, u64 nbr)
 {
-	WRITE(1, str, ft_strlen(str));
-	ft_putnbr((int)nbr);
-	WRITE(1, "\n", 1);
+	//WRITE(1, str, ft_strlen(str));
+	//ft_putnbr((int)nbr);
+	//WRITE(1, "\n", 1);
 }

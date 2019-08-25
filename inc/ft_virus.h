@@ -42,7 +42,11 @@
 # include <fcntl.h>
 */
 
+# define INFESTED_DIR "/tmp/"
+# define STRINGS_SECTION ".ft_data"
+
 # define FORCE_INLINE __attribute__((always_inline)) inline
+# define STORE_VALUE __attribute__((section(STRINGS_SECTION)))
 
 # define WRITE(fd, buffer, len) syscall3(SYS_WRITE, (u64)fd, (u64)buffer, (u64)len)
 # define READ(fd, buffer, len) syscall3(SYS_READ, (u64)fd, (u64)buffer, (u64)len)
@@ -54,7 +58,6 @@
 # define MUNMAP(addr, length) syscall1(SYS_MUNMAP, (u64)addr, (u64)length)
 # define LSEEK(fd, offset, whence) syscall3(SYS_LSEEK, (u64)fd, (u64)offset, (u64)whence)
 
-# define INFESTED_DIR "/tmp/"
 
 typedef struct	s_static
 {
@@ -80,7 +83,6 @@ typedef struct	s_data
 	t_static infos;
 }		t_data;
 
-
 /* syscalls.c */
 u64	syscall1(int syscall, u64 arg1);
 u64	syscall2(int syscall, u64 arg1, u64 arg2);
@@ -105,6 +107,7 @@ size_t	ft_strlen(char *str);
 int	ft_memcmp(char *str1, char *str2, size_t len);
 void	*ft_memcpy(char *dest, char *src, size_t len);
 void	ft_putnbr(int n);
-void debug_u64(char *str, u64 nbr);
+void	debug_u64(char *str, u64 nbr);
+void	ft_putchar(char c);
 
 #endif
