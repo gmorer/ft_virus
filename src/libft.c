@@ -33,6 +33,22 @@ void *ft_memcpy(char *dest, char *src, size_t len)
 	return (dest);
 }
 
+void ft_putul(u64 n)
+{
+	char c;
+
+	if (n < 10)
+	{
+		c = '0' + n;
+		WRITE(1, &c, 1);
+	}
+	else if (n > 9)
+	{
+		ft_putul(n / 10);
+		ft_putul(n % 10);
+	}
+}
+
 void ft_putnbr(int n)
 {
 	char c;

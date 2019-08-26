@@ -1,24 +1,25 @@
 NAME := ft_virus
 
 CC := gcc
+ASM := nasm
 
-CFLAGS = -masm=intel -ffunction-sections -fdata-sections -fno-stack-protector -O0
+CFLAGS = -masm=intel -ffunction-sections -fno-stack-protector -O0
+SFLAGS := -f elf64
 
 CPATH = src/
 HPATH = inc/
 OPATH = obj/
 
-CFILES = \
-	 main.c \
-	 syscall.c \
-	 binary_finder.c\
-	 libft.c\
-	 inject.c\
-	 get_infos.c
+OBJS = \
+	 main.o \
+	 syscall.o \
+	 binary_finder.o\
+	 libft.o\
+	 inject.o\
+	 get_infos.o\
+	 get_addr.o
 
-OFILES = $(CFILES:.c=.o)
-
-OBJ = $(addprefix $(OPATH), $(OFILES))
+ALL_OBJS = $(addprefix $(OPATH), $(OBJS))
 
 HFILES = inc/ft_virus.h
 
@@ -28,16 +29,23 @@ LINKER := ld
 LINKER_CONF := linker.ld
 LINKER_FLAGS := -T $(LINKER_CONF) 
 
-.PHONY: all install clean fclean re test
+#.PHONY: all install clean fclean re test
 
 all: $(NAME)
 
-$(NAME): $(OBJ)
-	$(LD) $(LINKER_FLAGS) $(OBJ) -o $(NAME)
+$(OPATH):
+	mkdir -p $(OPATH)
+
+$(NAME): $(ALL_OBJS)
+	$(LD) $(LINKER_FLAGS) $(ALL_OBJS) -o $(NAME)
 
 $(OPATH)%.o: $(CPATH)%.c $(HFILES)
 	mkdir -p $(OPATH)
-	$(CC) $(CFLAGS) -g $(INC) $< -c -o $@
+	$(CC) $(CFLAGS) $(INC) $< -c -o $@
+
+$(OPATH)%.o: $(CPATH)%.s $(HFILES)
+	mkdir -p $(OPATH)
+	$(ASM) $(SFLAGS) $< -o $@
 
 clean:
 	rm -f $(OBJ)

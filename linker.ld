@@ -5,7 +5,7 @@
        .text : {
 		   *(.text.start)
 		   *(.text.payload)
-		   *(.ft_data)
+		   *(.text.get_rel_addr)
 		   *(.text.syscall1)
 		   *(.text.syscall2)
 		   *(.text.syscall3)
@@ -16,6 +16,7 @@
 		   *(.text.ft_memcpy)
 		   *(.text.ft_putnbr)
 		   *(.text.ft_putchar)
+		   *(.text.ft_putul)
 		   *(.text.debug_u64)
 		   *(.text.inject)
 		   *(.text.payload_end)
