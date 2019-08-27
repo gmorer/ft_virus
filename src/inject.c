@@ -67,12 +67,12 @@ int FORCE_INLINE metamorph_section(t_data data)
 
 void FORCE_INLINE write_jump(t_data data)
 {
-	char	jmp_code[] = "\xe9\xde\xad\xbe\xef";
+	char	jmp_code[] = "\xc9\xe9\xde\xad\xbe\xef"; // leaveq and jump
 	int	jmp_addr;
 
 	jmp_addr = data.bin.old_entry - (data.bin.new_entry + data.infos.pl_size);
 	jmp_addr -= 5;
-	ft_memcpy(jmp_code + 1, (char *)&jmp_addr, sizeof(int));
+	ft_memcpy(jmp_code + 2, (char *)&jmp_addr, sizeof(int));
 	//LSEEK(data.fd, -2, SEEK_CUR);
 	WRITE(data.fd, jmp_code, sizeof(jmp_code) - 1);
 }
