@@ -46,7 +46,12 @@ int finder(t_data data, int dir_fd)
 		ft_putchar('\n');
 		nread = syscall3(SYS_GETDENT64, (u64)dir_fd, (u64)buf, (u64)BUF_SIZE);
 		if (!nread || nread == -1)
+		{
+			ft_putchar('2');
+			ft_putchar('x');
+			ft_putchar('\n');
 			return (0);
+		}
 		bpos = 0;
 		while (bpos < nread)
 		{

