@@ -13,8 +13,9 @@
 # define SYS_MMAP 9
 # define SYS_MUNMAP 11
 # define SYS_EXIT 60
+# define SYS_READLINK 89
 # define SYS_GETUID 102
-# define SYS_GETDENT64 217
+# define SYS_GETDENTS64 217
 
 # define O_RDONLY 0
 # define O_WRONLY 1
@@ -47,7 +48,8 @@
 # define MMAP(addr, len, prot, flags, fildes, off) syscall6(SYS_MMAP, (void*)addr, (size_t)len, (int)prot, (int)flags, (int)fildes, (int)off)
 # define MUNMAP(addr, length) syscall1(SYS_MUNMAP, (u64)addr, (u64)length)
 # define LSEEK(fd, offset, whence) syscall3(SYS_LSEEK, (u64)fd, (u64)offset, (u64)whence)
-
+# define GETDENTS64(fd, dirp, count) syscall3(SYS_GETDENTS64, (u64)fd, (u64)dirp, (u64)count)
+# define READLINK(pathname, buff, buffsize) syscall3(SYS_READLINK, pathname, buff, buffsize)
 
 typedef struct	s_static
 {

