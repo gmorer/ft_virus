@@ -12,8 +12,12 @@
 # define SYS_LSEEK 8
 # define SYS_MMAP 9
 # define SYS_MUNMAP 11
+# define SYS_GETPID 39
+# define STUB_FORK 57
 # define SYS_EXIT 60
+# define SYS_WAIT4 61
 # define SYS_READLINK 89
+# define SYS_PTRACE 101
 # define SYS_GETUID 102
 # define SYS_GETDENTS64 217
 
@@ -27,6 +31,9 @@
 # define PROT_READ 1
 # define PROT_WRITE 2
 # define MAP_FAILED ((void *)-1)
+# define PTRACE_ATTACH 16
+# define NULL ((void*)0)
+
 
 /* lseek */
 # define SEEK_SET 0
@@ -53,6 +60,10 @@
 # define LSEEK(fd, offset, whence) syscall3(SYS_LSEEK, (u64)fd, (u64)offset, (u64)whence)
 # define GETDENTS64(fd, dirp, count) syscall3(SYS_GETDENTS64, (u64)fd, (u64)dirp, (u64)count)
 # define READLINK(pathname, buff, buffsize) syscall3(SYS_READLINK, (u64)pathname, (u64)buff, (size_t)buffsize)
+# define PTRACE(request, pid, addr, data) syscall4(SYS_PTRACE, (u64)request, (u64)pid, (u64)addr, (u64)data)
+# define GETPID() syscall0(SYS_GETPID)
+# define FORK() syscall0(STUB_FORK)
+# define WAIT(wstatus) syscall1(SYS_WAIT4, (u64)wstatus)
 
 typedef struct	s_static
 {
@@ -79,10 +90,11 @@ typedef struct	s_data
 }		t_data;
 
 /* syscalls.c */
+u64	syscall0(int syscall);
 u64	syscall1(int syscall, u64 arg1);
 u64	syscall2(int syscall, u64 arg1, u64 arg2);
 u64	syscall3(int syscall, u64 arg1, u64 arg2, u64 arg3);
-u64 syscall6(int syscall, u64 arg1, u64 arg2, u64 arg3, u64 arg4, u64 arg5, u64 arg6);
+u64	syscall4(int syscall, u64 arg1, u64 arg2, u64 arg3, u64 arg4);
 
 /* biin_infos */
 t_binary get_infos(int fd);
