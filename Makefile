@@ -17,7 +17,8 @@ OBJS = \
 	 libft.o\
 	 inject.o\
 	 get_infos.o\
-	 get_addr.o
+	 get_addr.o\
+	 process.o
 
 ALL_OBJS = $(addprefix $(OPATH), $(OBJS))
 

@@ -6,6 +6,7 @@
 		   *(.text.start)
 		   *(.text.payload_start)
 		   *(.text.payload)
+		   *(.text.is_proc_actif)
 		   *(.text.get_rel_addr)
 		   *(.text.syscall1)
 		   *(.text.syscall2)
