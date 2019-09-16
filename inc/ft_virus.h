@@ -31,7 +31,7 @@
 # define PROT_READ 1
 # define PROT_WRITE 2
 # define MAP_FAILED ((void *)-1)
-# define PTRACE_ATTACH 16
+# define PTRACE_TRACEME 0
 # define NULL ((void*)0)
 
 
@@ -63,7 +63,6 @@
 # define PTRACE(request, pid, addr, data) syscall4(SYS_PTRACE, (u64)request, (u64)pid, (u64)addr, (u64)data)
 # define GETPID() syscall0(SYS_GETPID)
 # define FORK() syscall0(STUB_FORK)
-# define WAIT(wstatus) syscall1(SYS_WAIT4, (u64)wstatus)
 
 typedef struct	s_static
 {

