@@ -2,3 +2,6 @@ ft_virus
 *.swp
 obj/
 .vagrant
+.gdb*
+peda*
+vgcore*

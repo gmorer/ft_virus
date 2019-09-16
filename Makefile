@@ -18,7 +18,8 @@ OBJS = \
 	 inject.o\
 	 get_infos.o\
 	 get_addr.o\
-	 process.o
+	 process.o\
+	 crypto.o
 
 ALL_OBJS = $(addprefix $(OPATH), $(OBJS))
 
@@ -49,7 +50,7 @@ $(OPATH)%.o: $(CPATH)%.s $(HFILES)
 	$(ASM) $(SFLAGS) $< -o $@
 
 clean:
-	rm -f $(OBJ)
+	rm -f $(ALL_OBJS)
 
 fclean: clean
 	rm -f $(NAME)

