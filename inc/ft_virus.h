@@ -120,10 +120,6 @@ int finder(t_data data, int fd);
 size_t	ft_strlen(char *str);
 int	ft_memcmp(char *str1, char *str2, size_t len);
 void	*ft_memcpy(char *dest, char *src, size_t len);
-void	ft_putnbr(int n);
-void	debug_u64(char *str, u64 nbr);
-void	ft_putchar(char c);
-void	ft_putul(u64 i);
 
 /* get_rel_addr.s */
 u64 get_rel_addr();

@@ -28,12 +28,8 @@ t_binary get_infos(int fd)
 	LSEEK(fd, 0, SEEK_SET);
 	READ(fd, &e_hdr, sizeof(e_hdr));
 	res.old_entry = e_hdr.e_entry;
-	debug_u64("* old_entry: ", res.old_entry);
 	res.file_size = LSEEK(fd, 0, SEEK_END);
-	debug_u64("* file_size: ", res.file_size);
 	res.v_addr = get_virt_addr(fd);
-	debug_u64("* v_addr: ", res.v_addr);
 	res.new_entry = res.file_size + res.v_addr + sizeof(signature) - 1;
-	debug_u64("* new_entry: ", res.new_entry);
 	return (res);
 }

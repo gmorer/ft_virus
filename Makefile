@@ -4,6 +4,9 @@ CC := gcc
 ASM := nasm
 
 CFLAGS = -masm=intel -ffunction-sections -fno-stack-protector -O0
+ifeq ($(LEVEL), DEBUG)
+CFLAGS += -D __HELLO__
+endif
 SFLAGS := -f elf64
 
 CPATH = src/

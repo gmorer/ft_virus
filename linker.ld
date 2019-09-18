@@ -20,10 +20,6 @@
 			*(.text.encrypt)
 			*(.text.finder)
 			*(.text.get_infos)
-			*(.text.ft_putnbr)
-			*(.text.ft_putchar)
-			*(.text.ft_putul)
-			*(.text.debug_u64)
 			*(.text.inject)
 			*(.text.payload_end)
 	   }
