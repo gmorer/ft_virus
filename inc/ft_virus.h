@@ -16,6 +16,7 @@
 # define STUB_FORK 57
 # define SYS_EXIT 60
 # define SYS_WAIT4 61
+# define SYS_KILL 62
 # define SYS_READLINK 89
 # define SYS_PTRACE 101
 # define SYS_GETUID 102
@@ -33,8 +34,10 @@
 # define PROT_WRITE 2
 # define MAP_FAILED ((void *)-1)
 # define PTRACE_TRACEME 0
+# define PTRACE_DETACH 17
+# define PTRACE_ATTACH 16
 # define NULL ((void*)0)
-
+# define SIGSTOP 19
 
 /* lseek */
 # define SEEK_SET 0
@@ -65,6 +68,8 @@
 # define GETPID() syscall0(SYS_GETPID)
 # define FORK() syscall0(STUB_FORK)
 # define GETRANDOM(buf, buflen, flags) syscall3(SYS_GETRANDOM, (u64)buf, (u64)buflen, (u64)flags)
+# define KILL(pid, sig) syscall2(SYS_KILL, (u64)pid, (u64)sig)
+# define WAIT4(pid, wstatus, options, rusage) syscall4(SYS_WAIT4, (u64)pid, (u64)wstatus, (u64)options, (u64)rusage)
 
 typedef struct	s_static
 {

