@@ -7,8 +7,8 @@ int FORCE_INLINE signature_present(int fd)
 	char signature[] = SIGNATURE;
 	char buffer[sizeof(signature) - 1];
 
-	// for 5 the size of the jump instruction
-	LSEEK(fd, -1 * ((&payload_end + 5) - &payload_start + (sizeof(signature) - 1)), SEEK_END);
+	// for 5 the size of the jump instruction + 1 for the cipher key
+	LSEEK(fd, -1 * ((&payload_end + 6) - &payload_start + (sizeof(signature) - 1)), SEEK_END);
 	READ(fd, &buffer, sizeof(signature) - 1);
 	if (!ft_memcmp(buffer, signature, sizeof(signature) - 1))
 		return (1);
