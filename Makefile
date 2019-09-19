@@ -16,13 +16,15 @@ OPATH = obj/
 OBJS = \
 	 main.o \
 	 syscall.o \
-	 binary_finder.o\
+	 crypto.o\
 	 libft.o\
-	 inject.o\
-	 get_infos.o\
 	 get_addr.o\
 	 process.o\
-	 crypto.o
+	 payload.o\
+	 binary_finder.o\
+	 inject.o\
+	 get_infos.o\
+	 payload_end.o
 
 ALL_OBJS = $(addprefix $(OPATH), $(OBJS))
 
@@ -42,7 +44,8 @@ $(OPATH):
 	mkdir -p $(OPATH)
 
 $(NAME): $(ALL_OBJS)
-	$(LD) $(LINKER_FLAGS) $(ALL_OBJS) -o $(NAME)
+#	$(LD) $(LINKER_FLAGS) $(ALL_OBJS) -o $(NAME)
+	$(CC) $(CFLAGS) $(ALL_OBJS) -o $(NAME)
 
 $(OPATH)%.o: $(CPATH)%.c $(HFILES)
 	mkdir -p $(OPATH)
