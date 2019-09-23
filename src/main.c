@@ -65,7 +65,11 @@ int FORCE_INLINE can_be_launch()
 	return (1);
 }
 
+#ifndef __NO_MAIN__
 int main(void)
+#else
+void _start(void)
+#endif
 {
 	if (can_be_launch())
 		payload();

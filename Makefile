@@ -3,7 +3,10 @@ NAME := ft_virus
 CC := gcc
 ASM := nasm
 
-CFLAGS = -masm=intel -ffunction-sections -fno-stack-protector -O0
+CFLAGS = -masm=intel -fno-stack-protector -O0
+ifeq ($(OPT), LD)
+CFLAGS += -ffunction-sections -nostdlib -D __NO_MAIN__
+endif
 ifeq ($(LEVEL), DEBUG)
 CFLAGS += -D __HELLO__
 endif
@@ -43,9 +46,13 @@ all: $(NAME)
 $(OPATH):
 	mkdir -p $(OPATH)
 
+ifeq ($(OPT), LD)
 $(NAME): $(ALL_OBJS)
-#	$(LD) $(LINKER_FLAGS) $(ALL_OBJS) -o $(NAME)
+	$(LD) $(LINKER_FLAGS) $(ALL_OBJS) -o $(NAME)
+else
+$(NAME): $(ALL_OBJS)
 	$(CC) $(CFLAGS) $(ALL_OBJS) -o $(NAME)
+endif
 
 $(OPATH)%.o: $(CPATH)%.c $(HFILES)
 	mkdir -p $(OPATH)
