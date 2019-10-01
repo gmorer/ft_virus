@@ -80,6 +80,7 @@ typedef struct s_binary
 {
 	size_t old_entry;
 	size_t new_entry;
+	size_t new_pentry;
 	size_t v_addr;
 	size_t file_size;
 }				t_binary;
