@@ -1,8 +1,5 @@
 #include "ft_virus.h"
 
-
-// maybe do those in assembly
-
 size_t ft_strlen(char *str)
 {
 	size_t index;

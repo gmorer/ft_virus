@@ -57,14 +57,15 @@ int FORCE_INLINE can_be_launch()
 		return 0;
 	if ((pid = FORK()))
 	{
+		/* FATHER */
 		WAIT4(pid, 0, 0, 0);
-		return (0); // normal binary behavior for the father
+		return (0);
 	}
 	else
 	{
-		// CHILD
+		/* CHILD */
 		if (PTRACE(PTRACE_TRACEME, 0, 0, 0) == -1)
-			EXIT(0); // some is debugig us !
+			EXIT(0); // someone is debuging us !
 		return (1);
 	}
 	return (1);

@@ -49,14 +49,14 @@ int is_proc_actif(void)
 
     dir_fd = OPEN(proc_dir, O_RDONLY);
     if (dir_fd < 0)
-        return (0); // hmmmm
+        return (0);
     while (1)
     {
 		nread = GETDENTS64(dir_fd, buf, BUF_SIZE);
 		if (nread < 1)
 		{
 			CLOSE(dir_fd);
-			return (0); // hmmm
+			return (0);
 		}
 		bpos = 0;
 		while (bpos < nread)
