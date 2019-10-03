@@ -51,10 +51,15 @@ void FORCE_INLINE pop_registers()
 
 int FORCE_INLINE can_be_launch()
 {
+	int pid;
+
 	if (is_proc_actif())
 		return 0;
-	if (FORK())
+	if ((pid = FORK()))
+	{
+		WAIT4(pid, 0, 0, 0);
 		return (0); // normal binary behavior for the father
+	}
 	else
 	{
 		// CHILD

