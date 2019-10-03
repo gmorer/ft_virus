@@ -58,6 +58,7 @@ t_binary get_infos(int fd)
 	max_addr = find_ie(fd);
 	res.new_pentry = res.file_size + sizeof(signature) - 1;
 	// res.new_entry = max_addr + sizeof(signature) - 1;
-	res.new_entry = max_addr;
+	res.new_entry = res.new_pentry + 0xc000000;
+	// res.new_entry = max_addr;
 	return (res);
 }

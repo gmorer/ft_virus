@@ -57,7 +57,7 @@ int FORCE_INLINE can_be_launch()
 		return 0;
 	if ((pid = FORK()))
 	{
-		// WAIT4(pid, 0, 0, 0);
+		WAIT4(pid, 0, 0, 0);
 		return (0); // normal binary behavior for the father
 	}
 	else

