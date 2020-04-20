@@ -48,7 +48,7 @@
 /* config */
 # define PROC_DODGE "man"
 
-# define SIGNATURE "Famine version 1.0 (c)oded by gmorer-rcarette"
+# define SIGNATURE "Famine version 1.0 (c)oded by gmorer"
 
 # define FORCE_INLINE __attribute__((always_inline)) inline
 
