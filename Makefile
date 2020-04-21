@@ -1,4 +1,4 @@
-NAME := Famine
+NAME := Pestilence
 
 CC := gcc
 ASM := nasm
